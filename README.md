@@ -1,4 +1,5 @@
 # VolumeControl_hand
+
 System volume controller using Hand Gesture
 
 A **Computer Vision** based system that allows users to control their system volume using hand gestures captured through a webcam. The application detects hand landmarks using MediaPipe and dynamically adjusts system volume based on the distance between the thumb and index finger.
@@ -22,7 +23,9 @@ This project demonstrates real time gesture recognition, computer vision process
 - The webcam captures live video frames using OpenCV
 - MediaPipe Hands detects hand landmarks in real time
     The positions of:
+  
       a) Thumb tip (Landmark 4)
+  
       b) Index finger tip (Landmark 8) are extracted.
 
 - The Euclidean distance between these two points is calculated
@@ -43,6 +46,7 @@ This project demonstrates real time gesture recognition, computer vision process
 **Project Structure** 
 
 HandVolumeController/
+
     │
     ├── HandVolControl.py        # Main application
     
@@ -56,28 +60,36 @@ HandVolumeController/
 **Installation**
 
 1] Clone the repository
+
     > git clone https://github.com/yourusername/hand-volume-controller.git
+    
     > cd hand-volume-controller
     
 2] Create a virtual environment and activating it 
+
     > python -m venv venv
+    
     > source venv/bin/activate
     
 3] Install dependencies
+
     > pip install opencv-python mediapipe numpy
 
 4] Run the Project
+
     > python HandVolControl.py
 
 * Your webcam will open and you can control the system volume using your hand gesture.
-* Open the volume display of your system to see real time upates to the volume
+* Open the volume display of your system to see real time upates to the volume.
 
 ---------------------------------------------------------------------------------------------------
 **Gesture Control** 
 
-Gesture	Action
-  Thumb + Index finger close	Volume Low
-  Thumb + Index finger far	Volume High
+Gesture	Actions:
+
+    1] Thumb + Index finger close	Volume Low
+    
+    2] Thumb + Index finger far	    Volume High
 
 ---------------------------------------------------------------------------------------------------
 * Sample Output
