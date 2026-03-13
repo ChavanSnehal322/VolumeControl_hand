@@ -37,9 +37,17 @@ interface = devices.Activate(
 
 volume = cast(interface, pointer(IAudioEndpointVolume) )
 # volume.GetMute()
-# volume.GetMasterVolumeLevel()
-print(volume.GetVolumeRange() )
-volume.SetMasterVolumeLevel(-20.0, None)
+# # volume.GetMasterVolumeLevel()
+# print(volume.GetVolumeRange() )
+# setting volume of system
+# # volume.SetMasterVolumeLevel(-20.0, None)
+volRange = volume.GetVolumeRange()
+minVol = volRange[0]
+maxVol = volRange[1]
+
+vol = 0
+volSlider = 400
+volPercent = 0
 
 
 while True:
@@ -79,27 +87,41 @@ while True:
         #  length of the line
         length = math.hypot(x2 - x1, y2 - y1)
 
+        #  converting hand range ( 50 to 100) to fit vol range to -65 to -0
+        vol = np.interp(length, [50, 300], [minVol, maxVol])
+        volSlider = np.interp(length[50, 300], [400, 150])
+
+        volPercent = np.interp(length, [50, 300], [0, 100])
+
+        print(int(length), vol)
+
+        volume.setMasterVolumeLevel(vol, None)
+
         #  if the vol is < 50 , changing the lmk of center of line
-        if length < 50 and length > 0:
+        if length < 50 and length > 1:
             cv2.circle(img, (cx, cy), 9, (0, 255, 0), cv2.FILLED)
 
         if length == 0:
             cv2.circle(img, (cx, cy), 2, (0, 0, 255), cv2.FILLED)
 
+    #      printing volume slider
+    cv2.rectangle(img, (50, 150), (80, 400), (255, 0, 0), 3)
+    cv2.rectangle(img, (50, int(volSlider)), (80, 400), (255, 0, 0), cv2.FILLED)
 
+    #  volume percent
+    cv2.putText(img, f'FPS : {int(volPercent)} %', (40, 450), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 3)
 
+    #  curr time
+    cTime = time.time()
 
-        #  curr time
-        cTime = time.time()
+    # Calculating the fps
+    fps = 1 / (cTime - pTime)
 
-        # Calculating the fps
-        fps = 1 / (cTime - pTime)
+    pTime = cTime
 
-        pTime = cTime
+    # printing the fps values
+    cv2.putText(img, f'FPS : {int(fps) }', (40, 60), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 3)
 
-        # printing the fps values
-        cv2.putText(img, f'FPS : {int(fps) }', (40, 60), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 3)
+    cv2.imshow("Img", img)
 
-        cv2.imshow("Img", img)
-
-        cv2.waitKey(1)
+    cv2.waitKey(1)

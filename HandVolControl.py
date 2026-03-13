@@ -31,6 +31,8 @@ pTime = 0
 detector = HTM.detectHand(detectionCon = 0.7)
 
 prevVol = -1
+volSlider = 400
+volPercent = 0  # intially vol = 0
 
 #  iterate until the img/ hand is present in camera window
 while True:
@@ -72,23 +74,31 @@ while True:
 
         # converting finger distance to volume
         vol = np.interp(length, [30, 250], [0, 100])
-        # set_volume(vol)
-
         vol = int(vol)
-
-        print("Volume:", vol)
 
         if abs(vol - prevVol) > 2:
             set_volume(vol)
             prevVol = vol
 
+        #  converting hand range ( 50 to 100) to fit vol range to -65 to -0
+        volSlider = np.interp(length, [35, 250], [400, 150])
+        volPercent = np.interp(length, [30, 250], [0, 100])
+
+        print("Volume:", vol)
+
         #  if the vol is < 50 , changing the lmk of center of line
-        if length < 50 and length > 0:
+        if length < 50 and length > 1:
             cv2.circle(img, (cx, cy), 9, (0, 255, 0), cv2.FILLED)
 
         if length == 0:
             cv2.circle(img, (cx, cy), 2, (0, 0, 255), cv2.FILLED)
 
+    #      printing volume slider
+    cv2.rectangle(img, (50, 150), (80, 400), (255, 0, 0), 3)
+    cv2.rectangle(img, (50, int(volSlider)), (80, 400), (255, 0, 0), cv2.FILLED)
+
+    #  volume percent
+    cv2.putText(img, f'FPS : {int(volPercent)} %', (40, 450), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 3)
 
     #  curr time
     cTime = time.time()
