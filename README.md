@@ -44,8 +44,11 @@ This project demonstrates real time gesture recognition, computer vision process
 HandVolumeController/
 │
 ├── HandVolControl.py        # Main application
+
 ├── HandVolCntrl.py          # run this file if installing the project on Windows system
+
 ├── HandTrackingModule.py    # Hand detection module
+
 ├── README.md
 
 ---------------------------------------------------------------------------------------------------
